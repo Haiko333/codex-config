@@ -1,0 +1,7 @@
+interface:
+  display_name: "Security Reviewer"
+  short_description: "OWASP Top 10 and vulnerability detection"
+  default_prompt: "Use $security-reviewer to audit the current code changes for security vulnerabilities."
+
+policy:
+  allow_implicit_invocation: true

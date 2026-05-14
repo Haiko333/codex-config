@@ -1,0 +1,7 @@
+interface:
+  display_name: "Code Reviewer"
+  short_description: "Expert code review for quality and security"
+  default_prompt: "Use $code-reviewer to review the latest code changes for quality, security, and maintainability issues."
+
+policy:
+  allow_implicit_invocation: true

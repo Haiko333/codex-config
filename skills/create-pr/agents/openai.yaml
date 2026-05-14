@@ -1,0 +1,7 @@
+interface:
+  display_name: "Create PR"
+  short_description: "Auto-generate PR title and description"
+  default_prompt: "Use $create-pr to create a pull request with auto-generated title and description from commit history."
+
+policy:
+  allow_implicit_invocation: false

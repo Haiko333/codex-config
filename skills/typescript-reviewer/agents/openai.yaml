@@ -1,0 +1,7 @@
+interface:
+  display_name: "TypeScript Reviewer"
+  short_description: "Type safety, async, and Node.js patterns"
+  default_prompt: "Use $typescript-reviewer to review TypeScript/JavaScript code for type safety, async correctness, and idiomatic patterns."
+
+policy:
+  allow_implicit_invocation: true

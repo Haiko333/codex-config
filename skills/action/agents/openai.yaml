@@ -1,0 +1,7 @@
+interface:
+  display_name: "Action"
+  short_description: "Conditional batch action executor"
+  default_prompt: "Use $action to verify conditions and execute batch actions safely."
+
+policy:
+  allow_implicit_invocation: false

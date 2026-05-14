@@ -1,0 +1,114 @@
+# ═══════════════════════════════════════════════════════════════════════
+# Codex CLI Configuration — ported from ~/.claude/settings.json
+# ═══════════════════════════════════════════════════════════════════════
+
+# ── Model & Provider ──────────────────────────────────────────────────
+
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+
+# Custom instructions loaded from external file (all rules combined)
+model_instructions_file = "/home/h41k0/.codex/instructions.md"
+
+# ── Approval & Sandbox ────────────────────────────────────────────────
+
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+# ── Web Search ────────────────────────────────────────────────────────
+
+web_search = "auto"
+
+# ── Features ──────────────────────────────────────────────────────────
+
+[features]
+hooks = true
+plugins = true
+memories = true
+multi_agent = true
+web_search = true
+shell_snapshot = true
+child_agents_md = true
+image_generation = true
+skill_mcp_dependency_install = true
+
+# ── Multi-Agent ───────────────────────────────────────────────────────
+
+[agents]
+max_threads = 8
+max_depth = 3
+
+# ── Agent Roles ───────────────────────────────────────────────────────
+# Codex agent roles: lightweight config-only definitions.
+# The behavioral instructions are in skills (invocable via $skill-name).
+
+[agents.code-reviewer]
+description = "Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code."
+nickname_candidates = ["reviewer", "cr"]
+
+[agents.security-reviewer]
+description = "Security vulnerability detection and remediation specialist. Use after writing code that handles user input, authentication, API endpoints, or sensitive data."
+nickname_candidates = ["secrev", "sec"]
+
+[agents.typescript-reviewer]
+description = "Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns."
+nickname_candidates = ["tsrev", "ts"]
+
+[agents.build-error-resolver]
+description = "Build and TypeScript error resolution specialist. Use when build fails or type errors occur. Fixes build/type errors only with minimal diffs."
+nickname_candidates = ["builder", "fix"]
+
+[agents.database-reviewer]
+description = "PostgreSQL database specialist for query optimization, schema design, security, and performance. Use when writing SQL, creating migrations, or designing schemas."
+nickname_candidates = ["dbrev", "db"]
+
+[agents.explorer]
+description = "Codebase exploration specialist. Use to find and present all relevant code and logic for a requested feature."
+nickname_candidates = ["scout", "explore"]
+
+[agents.docs-researcher]
+description = "Documentation research specialist. Finds relevant library documentation and code examples."
+nickname_candidates = ["docs", "research"]
+
+# ── TUI ───────────────────────────────────────────────────────────────
+
+[tui]
+theme = "dark"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 1
+
+# ── Hooks ─────────────────────────────────────────────────────────────
+
+# PreToolUse: command validator (blocks rm -rf, warns on sudo/kill/etc)
+[[hooks.PreToolUse]]
+matcher = "shell"
+[[hooks.PreToolUse.hooks]]
+type = "command"
+command = "/home/h41k0/.codex/scripts/command-validator/validate.sh"
+timeout = 5000
+
+# Stop: sound notification when session ends
+[[hooks.Stop]]
+[[hooks.Stop.hooks]]
+type = "command"
+command = "paplay /usr/share/sounds/Oxygen-Sys-App-Positive.ogg"
+async = true
+
+# ── History ───────────────────────────────────────────────────────────
+
+[history]
+persistence = "save-all"
+
+# ── Trusted Projects ──────────────────────────────────────────────────
+
+[projects."/home/h41k0"]
+trust_level = "trusted"
+
+# ── Skills ────────────────────────────────────────────────────────────
+
+[skills]
+include_instructions = true
+
+[skills.bundled]
+enabled = true

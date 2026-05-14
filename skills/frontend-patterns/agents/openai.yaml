@@ -1,0 +1,7 @@
+interface:
+  display_name: "Frontend Patterns"
+  short_description: "React and Next.js development patterns"
+  default_prompt: "Use $frontend-patterns for guidance on React, Next.js, and frontend development best practices."
+
+policy:
+  allow_implicit_invocation: true

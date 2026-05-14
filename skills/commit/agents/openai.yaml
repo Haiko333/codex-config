@@ -1,0 +1,7 @@
+interface:
+  display_name: "Commit"
+  short_description: "Quick conventional commit and push"
+  default_prompt: "Use $commit to create a clean conventional commit for the current changes."
+
+policy:
+  allow_implicit_invocation: false

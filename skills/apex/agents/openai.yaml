@@ -1,0 +1,7 @@
+interface:
+  display_name: "APEX Workflow"
+  short_description: "Analyze-Plan-Execute-Validate methodology"
+  default_prompt: "Use $apex to implement this feature using the APEX methodology with structured phases and validation."
+
+policy:
+  allow_implicit_invocation: false

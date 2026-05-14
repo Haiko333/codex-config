@@ -1,0 +1,7 @@
+interface:
+  display_name: "Fix Errors"
+  short_description: "Batch fix ESLint and TypeScript errors"
+  default_prompt: "Use $fix-errors to fix all ESLint and TypeScript errors in the project."
+
+policy:
+  allow_implicit_invocation: false

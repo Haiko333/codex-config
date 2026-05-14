@@ -1,0 +1,7 @@
+interface:
+  display_name: "Explore Docs"
+  short_description: "Research library documentation"
+  default_prompt: "Use $explore-docs to research documentation for the library or framework needed for this task."
+
+policy:
+  allow_implicit_invocation: true

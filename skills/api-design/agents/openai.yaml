@@ -1,0 +1,7 @@
+interface:
+  display_name: "API Design"
+  short_description: "REST API design patterns and best practices"
+  default_prompt: "Use $api-design for guidance on REST API design patterns and best practices."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "OpenAI API"
+  short_description: "Build and optimize OpenAI API apps"
+  default_prompt: "Use $openai-api for guidance on building applications with the OpenAI API and SDK."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ralph Loop"
+  short_description: "Autonomous AI coding loop"
+  default_prompt: "Use $ralph-loop to set up an autonomous development loop for implementing this feature."
+
+policy:
+  allow_implicit_invocation: false

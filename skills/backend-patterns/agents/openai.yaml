@@ -1,0 +1,7 @@
+interface:
+  display_name: "Backend Patterns"
+  short_description: "Node.js backend architecture patterns"
+  default_prompt: "Use $backend-patterns for guidance on backend architecture and server-side best practices."
+
+policy:
+  allow_implicit_invocation: true

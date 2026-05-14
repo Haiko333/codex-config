@@ -1,0 +1,7 @@
+interface:
+  display_name: "Codex Memory"
+  short_description: "Optimize Codex configuration and instructions"
+  default_prompt: "Use $codex-memory for guidance on setting up Codex CLI configuration and instruction files."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Deployment Patterns"
+  short_description: "CI/CD, Docker, and deployment workflows"
+  default_prompt: "Use $deployment-patterns for guidance on deployment strategies, CI/CD pipelines, and production readiness."
+
+policy:
+  allow_implicit_invocation: true

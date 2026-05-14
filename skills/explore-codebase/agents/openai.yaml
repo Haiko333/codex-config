@@ -1,0 +1,7 @@
+interface:
+  display_name: "Explore Codebase"
+  short_description: "Find and analyze code across the project"
+  default_prompt: "Use $explore-codebase to find all relevant code and patterns for implementing the requested feature."
+
+policy:
+  allow_implicit_invocation: true

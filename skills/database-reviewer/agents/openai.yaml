@@ -1,0 +1,7 @@
+interface:
+  display_name: "Database Reviewer"
+  short_description: "PostgreSQL query and schema optimization"
+  default_prompt: "Use $database-reviewer to review SQL queries, migrations, and schema design for performance and security."
+
+policy:
+  allow_implicit_invocation: true

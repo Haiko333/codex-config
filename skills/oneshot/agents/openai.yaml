@@ -1,0 +1,7 @@
+interface:
+  display_name: "Oneshot"
+  short_description: "Ultra-fast focused implementation"
+  default_prompt: "Use $oneshot to quickly implement this focused task with minimal overhead."
+
+policy:
+  allow_implicit_invocation: false

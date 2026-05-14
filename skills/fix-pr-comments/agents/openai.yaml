@@ -1,0 +1,7 @@
+interface:
+  display_name: "Fix PR Comments"
+  short_description: "Implement PR review feedback"
+  default_prompt: "Use $fix-pr-comments to fetch and implement all PR review comment changes."
+
+policy:
+  allow_implicit_invocation: false

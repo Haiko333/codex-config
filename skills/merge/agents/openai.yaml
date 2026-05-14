@@ -1,0 +1,7 @@
+interface:
+  display_name: "Merge"
+  short_description: "Context-aware branch merging"
+  default_prompt: "Use $merge to intelligently merge branches and resolve conflicts."
+
+policy:
+  allow_implicit_invocation: false

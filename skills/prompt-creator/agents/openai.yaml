@@ -1,0 +1,7 @@
+interface:
+  display_name: "Prompt Creator"
+  short_description: "Expert prompt engineering for LLMs"
+  default_prompt: "Use $prompt-creator to craft an effective prompt for the specified LLM task."
+
+policy:
+  allow_implicit_invocation: false

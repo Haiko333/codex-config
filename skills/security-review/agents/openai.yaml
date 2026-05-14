@@ -1,0 +1,7 @@
+interface:
+  display_name: "Security Review"
+  short_description: "Comprehensive security checklist and review"
+  default_prompt: "Use $security-review to perform a complete security review of the current branch changes."
+
+policy:
+  allow_implicit_invocation: false

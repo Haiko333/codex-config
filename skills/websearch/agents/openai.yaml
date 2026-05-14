@@ -1,0 +1,7 @@
+interface:
+  display_name: "Web Search"
+  short_description: "Quick web search for information"
+  default_prompt: "Use $websearch to quickly find information online about the topic."
+
+policy:
+  allow_implicit_invocation: true

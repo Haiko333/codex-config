@@ -1,0 +1,7 @@
+interface:
+  display_name: "Ultrathink"
+  short_description: "Deep thinking mode for elegant solutions"
+  default_prompt: "Use $ultrathink to deeply analyze this problem and craft an elegant, well-considered solution."
+
+policy:
+  allow_implicit_invocation: false

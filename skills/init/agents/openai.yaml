@@ -1,0 +1,7 @@
+interface:
+  display_name: "Init"
+  short_description: "Initialize project Codex configuration"
+  default_prompt: "Use $init to scan this project and create a .codex/config.toml with appropriate settings."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Frontend Design"
+  short_description: "Production-grade UI design"
+  default_prompt: "Use $frontend-design to create a distinctive, polished frontend interface."
+
+policy:
+  allow_implicit_invocation: false

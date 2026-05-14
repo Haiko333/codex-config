@@ -1,0 +1,7 @@
+interface:
+  display_name: "Code"
+  short_description: "Explore-Plan-Execute-Validate workflow"
+  default_prompt: "Use $code to implement this feature with structured context gathering and planning."
+
+policy:
+  allow_implicit_invocation: false

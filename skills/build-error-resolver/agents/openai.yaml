@@ -1,0 +1,7 @@
+interface:
+  display_name: "Build Error Resolver"
+  short_description: "Fix build and type errors with minimal diffs"
+  default_prompt: "Use $build-error-resolver to fix the current build or TypeScript errors with minimal changes."
+
+policy:
+  allow_implicit_invocation: true
