@@ -17,7 +17,7 @@ approval_policy = "on-request"
 
 # ── Web Search ────────────────────────────────────────────────────────
 
-web_search = "auto"
+web_search = "live"
 
 # ── Features ──────────────────────────────────────────────────────────
 
@@ -26,11 +26,11 @@ hooks = true
 plugins = true
 memories = true
 multi_agent = true
-web_search = true
 shell_snapshot = true
-child_agents_md = true
 image_generation = true
 skill_mcp_dependency_install = true
+
+suppress_unstable_features_warning = true
 
 # ── Multi-Agent ───────────────────────────────────────────────────────
 
@@ -76,7 +76,7 @@ nickname_candidates = ["docs", "research"]
 theme = "dark"
 
 [tui.model_availability_nux]
-"gpt-5.5" = 1
+"gpt-5.5" = 4
 
 # ── Hooks ─────────────────────────────────────────────────────────────
 
@@ -93,7 +93,14 @@ timeout = 5000
 [[hooks.Stop.hooks]]
 type = "command"
 command = "paplay /usr/share/sounds/Oxygen-Sys-App-Positive.ogg"
-async = true
+
+[hooks.state]
+
+[hooks.state."/home/h41k0/.codex/config.toml:pre_tool_use:0:0"]
+trusted_hash = "sha256:e889f6c61dc61784d03d3cfbf894a464f9ed84b38b6f11bdacc6d6a88bc8099a"
+
+[hooks.state."/home/h41k0/.codex/config.toml:stop:0:0"]
+trusted_hash = "sha256:43391939a12680cf9b7c8c5aeb477d146c6f7be4b85e2a93043f72416532bc25"
 
 # ── History ───────────────────────────────────────────────────────────
 
@@ -105,10 +112,16 @@ persistence = "save-all"
 [projects."/home/h41k0"]
 trust_level = "trusted"
 
+[projects."/home/h41k0/Development/Web/lucien-ai-dream"]
+trust_level = "trusted"
+
 # ── Skills ────────────────────────────────────────────────────────────
 
 [skills]
 include_instructions = true
 
 [skills.bundled]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
 enabled = true
