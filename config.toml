@@ -74,9 +74,11 @@ nickname_candidates = ["docs", "research"]
 
 [tui]
 theme = "dark"
+screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+"gpt-6.1-sol" = 1
 
 # ── Hooks ─────────────────────────────────────────────────────────────
 
@@ -115,6 +117,9 @@ trust_level = "trusted"
 [projects."/home/h41k0/Development/Web/lucien-ai-dream"]
 trust_level = "trusted"
 
+[projects."/home/h41k0/Development/Burnr/App"]
+trust_level = "trusted"
+
 # ── Skills ────────────────────────────────────────────────────────────
 
 [skills]
@@ -125,3 +130,30 @@ enabled = true
 
 [plugins."google-drive@openai-curated"]
 enabled = true
+
+[plugins."ponytail@ponytail"]
+enabled = true
+
+[plugins."aibp-base@aiblueprint"]
+enabled = true
+
+[plugins."clangd-lsp@claude-plugins-official"]
+enabled = true
+
+[mcp_servers.mxterm]
+url = "http://127.0.0.1:39801/mcp"
+
+[notice.model_migrations]
+"gpt-5.5" = "gpt-6.1-sol"
+
+[marketplaces.ponytail]
+source_type = "git"
+source = "https://github.com/DietrichGebert/ponytail.git"
+
+[marketplaces.aiblueprint]
+source_type = "git"
+source = "https://github.com/melvynx/aiblueprint.git"
+
+[marketplaces.claude-plugins-official]
+source_type = "git"
+source = "https://github.com/anthropics/claude-plugins-official.git"

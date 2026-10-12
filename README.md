@@ -1,6 +1,6 @@
 # codex-config
 
-Production-ready configuration for [OpenAI Codex CLI](https://github.com/openai/codex) — 33 custom skills, security hooks, and opinionated instructions for professional software development.
+Production-ready configuration for [OpenAI Codex CLI](https://github.com/openai/codex) — 33 custom skills, security hooks, Claude-aligned rules, and shared plugin setup for professional software development.
 
 ## What's Included
 
@@ -28,7 +28,7 @@ Production-ready configuration for [OpenAI Codex CLI](https://github.com/openai/
 ## Quick Install
 
 ```bash
-git clone https://github.com/h41k0/codex-config.git ~/.codex-config
+git clone https://github.com/Haiko333/codex-config.git ~/.codex-config
 cd ~/.codex-config
 ./install.sh
 ```
@@ -38,6 +38,7 @@ The installer will:
 2. Install the configuration with paths adjusted to your `$HOME`
 3. Copy all skills to `~/.codex/skills/`
 4. Set up the security hook
+5. Add Claude-aligned plugin marketplaces and install compatible plugins
 
 ## Skills Overview
 
@@ -109,17 +110,34 @@ The `validate.sh` PreToolUse hook provides:
 - **Multi-agent**: 8 concurrent threads, 3 depth max
 - **Theme**: Dark
 - **Sound**: Notification on session end
+- **MCP**: mxterm local MCP server
+- **Plugins**: Google Drive plus Claude-aligned `ponytail`, `aibp-base`, and `clangd-lsp`
 
 ## Instructions (Coding Standards)
 
-The `instructions.md` file enforces:
+The `instructions.md` file is synced with the Claude rules and enforces:
 - Immutability (no mutation)
 - KISS / DRY / YAGNI principles
-- 80%+ test coverage with TDD
+- Scaled testing: test risky logic and bug fixes; run config/scripts once
 - Security-first (OWASP, no hardcoded secrets)
+- Agent delegation only when it saves context or improves review quality
 - Conventional commits
 - TypeScript best practices (no `any`, Zod validation)
-- Code review after every change
+- Code review before PRs and risky commits
+
+
+## Plugins
+
+This Codex config mirrors the compatible Claude plugin setup:
+
+| Plugin | Source | Purpose |
+|--------|--------|---------|
+| `ponytail@ponytail` | `DietrichGebert/ponytail` | Lazy senior dev mode / YAGNI workflow |
+| `aibp-base@aiblueprint` | `melvynx/aiblueprint` | AIBlueprint productivity setup |
+| `clangd-lsp@claude-plugins-official` | `anthropics/claude-plugins-official` | C/C++ language server support |
+| `google-drive@openai-curated` | OpenAI curated | Google Drive connector already enabled in config |
+
+The installer configures the three Git marketplaces and installs the compatible plugins. OpenAI-curated plugins remain configured through Codex.
 
 ## Customization
 
@@ -146,7 +164,7 @@ policy:
 
 ## Credits
 
-Ported from a battle-tested [Claude Code](https://claude.ai/code) configuration with 9 agents, 23 skills, 15 rules, and security hooks. Adapted for Codex CLI's TOML/SKILL.md format.
+Ported from and kept aligned with a battle-tested [Claude Code](https://claude.ai/code) configuration, including shared rules, compatible plugins, custom skills, and security hooks. Adapted for Codex CLI's TOML/SKILL.md format.
 
 ## License
 

@@ -13,8 +13,8 @@ ALWAYS create new objects, NEVER mutate existing ones. Use spread operators, map
 ### Core Principles
 
 - **KISS**: Prefer the simplest solution that actually works. Optimize for clarity over cleverness.
-- **DRY**: Extract repeated logic into shared functions. Avoid copy-paste drift.
-- **YAGNI**: Do not build features or abstractions before they are needed.
+- **DRY**: Extract repeated logic into shared functions when repetition is real. Avoid copy-paste drift.
+- **YAGNI**: Do not build features, options, or abstractions before they are needed.
 
 ### File Organization
 
@@ -33,7 +33,7 @@ MANY SMALL FILES > FEW LARGE FILES:
 
 ### Input Validation
 
-- Validate all user input before processing
+- Validate all user input at system boundaries
 - Use schema-based validation where available (Zod preferred for TS)
 - Fail fast with clear error messages
 - Never trust external data (API responses, user input, file content)
@@ -52,6 +52,7 @@ MANY SMALL FILES > FEW LARGE FILES:
 - Magic numbers: use named constants
 - Long functions (>50 lines): split into focused pieces
 - Large files (>800 lines): extract modules
+- Dead code, unused options, speculative config, and abstractions with one implementation
 
 ---
 
@@ -64,10 +65,10 @@ Before ANY commit:
 - All user inputs validated
 - SQL injection prevention (parameterized queries)
 - XSS prevention (sanitized HTML)
-- CSRF protection enabled
+- CSRF protection enabled where applicable
 - Authentication/authorization verified
-- Rate limiting on all endpoints
-- Error messages don't leak sensitive data
+- Rate limiting on public or sensitive endpoints
+- Error messages do not leak sensitive data
 
 ### Secret Management
 
@@ -76,76 +77,66 @@ Before ANY commit:
 - Validate that required secrets are present at startup
 - Rotate any secrets that may have been exposed
 
+### Security Response Protocol
+
+If a security issue is found:
+1. Stop and assess the impact.
+2. Use `security-reviewer` for comprehensive review when available.
+3. Fix CRITICAL issues before continuing.
+4. Rotate any exposed secrets.
+5. Review the codebase for similar issues.
+
 ---
 
 ## Testing Requirements
 
-### Minimum Test Coverage: 80%
+### When to Test
 
-Test Types (ALL required):
-1. **Unit Tests** — Individual functions, utilities, components
-2. **Integration Tests** — API endpoints, database operations
-3. **E2E Tests** — Critical user flows
+- Logic with a branch, loop, parser, money, security, or data writes: leave a test behind.
+- Bug fix: add a test that fails without the fix.
+- Config, glue code, docs, and one-off scripts: no test required; run once to verify.
+- In projects with an existing test suite, follow its conventions and coverage target (80% if none is stated).
 
-### Test-Driven Development
+### TDD Workflow
 
-MANDATORY workflow:
-1. Write test first (RED)
-2. Run test — it should FAIL
-3. Write minimal implementation (GREEN)
-4. Run test — it should PASS
-5. Refactor (IMPROVE)
-6. Verify coverage (80%+)
+Use test-first when behavior is clear up front:
+1. Write a failing test (RED)
+2. Write minimal implementation (GREEN)
+3. Refactor without changing behavior (IMPROVE)
+4. Verify coverage where the project tracks it
 
-### Test Structure (AAA Pattern)
+### Test Structure
 
-Use Arrange-Act-Assert structure. Use descriptive names that explain the behavior under test.
+Use Arrange-Act-Assert. Test names should explain behavior, e.g. `returns empty array when no markets match query`.
 
 ---
 
-## Git Workflow
+## Agent Orchestration
 
-### Commit Message Format
+Agents start cold and cost tokens. Default: work directly in the main context.
 
-```
-<type>: <description>
+### When to Delegate
 
-<optional body>
-```
+| Situation | Agent/Skill |
+|-----------|-------------|
+| Broad search across many files or an unfamiliar large codebase | `explore-codebase` |
+| Need library documentation or examples | `explore-docs` |
+| Auth, user input, secrets, payments, DB queries changed | `security-reviewer` |
+| Build or type errors not fixed after one direct attempt | `build-error-resolver` |
+| Non-trivial code change before a PR | `code-reviewer` (`typescript-reviewer` for TS/JS) |
 
-Types: feat, fix, refactor, docs, test, chore, perf, ci
-
-### Pull Request Workflow
-
-1. Analyze full commit history (not just latest commit)
-2. Use `git diff [base-branch]...HEAD` to see all changes
-3. Draft comprehensive PR summary
-4. Include test plan with TODOs
-5. Push with `-u` flag if new branch
-
----
-
-## Development Workflow
-
-### Feature Implementation
-
-0. **Research & Reuse** — Search GitHub, library docs, and package registries before writing new code. Prefer adopting proven approaches.
-1. **Plan First** — Create implementation plan before coding. Identify dependencies and risks.
-2. **TDD Approach** — Write tests first, implement to pass, refactor. Verify 80%+ coverage.
-3. **Code Review** — Review immediately after writing code. Address CRITICAL and HIGH issues.
-4. **Commit & Push** — Detailed commit messages, conventional commits format.
-5. **Pre-Review Checks** — Verify CI/CD passing, resolve conflicts, ensure branch up to date.
+Do not delegate reading a few known files, small edits, config, or scripts.
+Independent agents go in a single parallel batch when possible.
 
 ---
 
 ## Code Review Standards
 
-### When to Review (MANDATORY)
+### When to Review
 
-- After writing or modifying code
-- Before any commit to shared branches
-- When security-sensitive code changes (auth, payments, user data)
-- When architectural changes are made
+- Before a PR or a commit to a shared branch
+- Always for security-sensitive code: auth, user input, DB queries, file paths, external APIs, crypto, payments
+- Skip for docs, config-only changes, and trivial edits unless risk is present
 
 ### Review Checklist
 
@@ -155,18 +146,62 @@ Types: feat, fix, refactor, docs, test, chore, perf, ci
 - No deep nesting (>4 levels)
 - Errors are handled explicitly
 - No hardcoded secrets or credentials
-- No console.log or debug statements
-- Tests exist for new functionality
-- Test coverage meets 80% minimum
+- No debug statements in production code
+- Risky logic has a test
+- No SQL built by string concatenation
+- No unescaped user input or unsanitized paths
+- No N+1 or unbounded queries
 
 ### Severity Levels
 
 | Level | Action |
 |-------|--------|
-| CRITICAL | BLOCK — Must fix before merge |
-| HIGH | WARN — Should fix before merge |
-| MEDIUM | INFO — Consider fixing |
-| LOW | NOTE — Optional |
+| CRITICAL | BLOCK — Security vulnerability or data loss; must fix before merge |
+| HIGH | WARN — Bug or significant quality issue; should fix before merge |
+| MEDIUM | INFO — Maintainability issue; consider fixing |
+| LOW | NOTE — Style or optional improvement |
+
+---
+
+## Git Workflow
+
+### Commit Message Format
+
+```text
+<type>: <description>
+
+<optional body>
+```
+
+Types: feat, fix, refactor, docs, test, chore, perf, ci
+
+### Pull Request Workflow
+
+1. Analyze full commit history, not just latest commit
+2. Use `git diff [base-branch]...HEAD` to see all changes
+3. Draft comprehensive PR summary
+4. Include test plan with TODOs
+5. Push with `-u` flag if new branch
+
+---
+
+## Development Workflow
+
+Scale the process to the task.
+
+### Small Change
+
+Read the relevant code, make the change, verify it runs, and stop.
+
+### Feature or Several Files
+
+1. **Reuse first** — check the codebase, standard library, installed dependencies, and docs before adding new code or packages.
+2. **Plan** — share a short implementation plan.
+3. **Implement with tests** — follow the testing rules above.
+4. **Review** — use the review standards above.
+5. **Commit** — use the git workflow above.
+
+Before PR review: CI passing, no merge conflicts, branch up to date with target.
 
 ---
 
@@ -174,20 +209,27 @@ Types: feat, fix, refactor, docs, test, chore, perf, ci
 
 ### Repository Pattern
 
-Encapsulate data access behind a consistent interface with findAll, findById, create, update, delete.
+Encapsulate data access behind a consistent interface: `findAll`, `findById`, `create`, `update`, `delete`.
 
 ### API Response Format
 
 Use a consistent envelope: success indicator, data payload, error message, metadata for pagination.
 
+### Skeleton Projects
+
+When implementing a new project or large feature, prefer a proven skeleton over inventing structure from scratch.
+
 ---
 
 ## Performance Guidelines
 
-- Always launch independent work in parallel when possible
-- Delegate read-only exploration to sub-agents
-- Keep main context for writing/editing files and complex reasoning
-- When context grows large, summarize and compact before continuing
+- Keep answers concise; do not recap obvious work.
+- Read only the part of a file that is needed.
+- Choose the smallest complete change; avoid speculative abstractions.
+- Always launch independent work in parallel when possible.
+- Delegate broad read-only exploration to sub-agents.
+- Keep main context for writing/editing files and complex reasoning.
+- Above 80% context: stop large explorations, delegate remaining reads, or compact before continuing.
 
 ---
 
@@ -195,9 +237,11 @@ Use a consistent envelope: success indicator, data payload, error message, metad
 
 ### Types and Interfaces
 
-- Add parameter and return types to exported functions
+- Add parameter and return types to exported functions, shared utilities, and public class methods
 - Let TypeScript infer obvious local variable types
-- Use `interface` for object shapes, `type` for unions/intersections/tuples
+- Extract repeated inline object shapes into named types or interfaces
+- Use `interface` for object shapes
+- Use `type` for unions/intersections/tuples/mapped types
 - Prefer string literal unions over `enum`
 - Avoid `any` — use `unknown` and narrow safely
 - Use generics when a value's type depends on the caller
@@ -208,7 +252,7 @@ Use a consistent envelope: success indicator, data payload, error message, metad
 - Type callback props explicitly
 - Do not use `React.FC` unless there is a specific reason
 
-### Error Handling (TS)
+### Error Handling
 
 Use async/await with try-catch and narrow unknown errors:
 
@@ -219,16 +263,16 @@ function getErrorMessage(error: unknown): string {
 }
 ```
 
-### Input Validation (TS)
+### Input Validation
 
-Use Zod for schema-based validation and infer types from schemas:
+Use Zod for schema-based validation when available:
 
 ```typescript
 import { z } from 'zod'
 
 const userSchema = z.object({
   email: z.string().email(),
-  age: z.number().int().min(0).max(150)
+  age: z.number().int().min(0).max(150),
 })
 
 type UserInput = z.infer<typeof userSchema>
@@ -241,13 +285,17 @@ interface ApiResponse<T> {
   success: boolean
   data?: T
   error?: string
-  meta?: { total: number; page: number; limit: number }
+  meta?: {
+    total: number
+    page: number
+    limit: number
+  }
 }
 ```
 
-### Security (TS)
+### Security
 
-- NEVER hardcode secrets: use `process.env`
-- Validate required env vars at startup
-- No `console.log` in production code — use proper logging libraries
-- Use Playwright for E2E testing
+- NEVER hardcode secrets; use `process.env`
+- Validate required environment variables at startup
+- No `console.log` in production code — use a logger
+- Use Playwright for E2E testing of critical user flows
